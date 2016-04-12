@@ -275,7 +275,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
      * 2、在onResume方法中调用BmobNotificationManager.getInstance(context).addObserver(this)方法添加观察者；
      * 在onPause方法中调用BmobNotificationManager.getInstance(context).removeObserver(this)方法移除观察者
      * <p/>
-     * 3、在主Activity的onDestroy方法中调用BmobNotificationManager.getInstance(context).clearObserver()清空观察者。
+     * 3、s在主Activity的onDestroy方法中调用BmobNotificationManager.getInstance(context).clearObserver()清空观察者。
      */
     @Override
     protected void onResume() {
