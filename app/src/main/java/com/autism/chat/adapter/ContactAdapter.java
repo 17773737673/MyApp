@@ -12,18 +12,8 @@ import android.widget.TextView;
 import com.autism.chat.R;
 import com.autism.chat.base.BaseListAdapter;
 import com.autism.chat.bean.User;
-import com.autism.chat.receiver.AddFriendEvent;
-import com.autism.chat.utils.ImageLoadOptions;
 import com.autism.chat.utils.ViewUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
-
-import cn.bmob.newim.bean.BmobIMConversation;
-import cn.bmob.newim.bean.BmobIMUserInfo;
-
 
 /**
  * Created by AutismPerson on 4/5 0005.
@@ -48,11 +38,6 @@ public class ContactAdapter<E> extends BaseListAdapter {
         name.setText(name2);
         //如果设置了头像就下载
         ViewUtil.setAvatar(toux, R.drawable.default_icon_user, tox);
-        if (!TextUtils.isEmpty(toux)) {
-            ImageLoader.getInstance().displayImage(toux, tox, ImageLoadOptions.getOptions());
-        } else {
-            tox.setBackgroundResource(R.drawable.default_icon_user);
-        }
         return convertView;
     }
 }

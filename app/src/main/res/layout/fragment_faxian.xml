@@ -8,9 +8,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:gravity="center"
         android:textSize="22sp"
         android:textColor="#f00"
-        android:text="3333333"
+        android:text="正在开发中"
         />
 </LinearLayout>

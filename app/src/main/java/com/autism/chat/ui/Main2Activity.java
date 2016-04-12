@@ -168,7 +168,6 @@ public class Main2Activity extends BaseActivity implements TabHost.OnTabChangeLi
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -184,6 +183,7 @@ public class Main2Activity extends BaseActivity implements TabHost.OnTabChangeLi
         //移除观察者
         BmobNotificationManager.getInstance(this).removeObserver(this);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -194,6 +194,6 @@ public class Main2Activity extends BaseActivity implements TabHost.OnTabChangeLi
     }
 
     @Subscribe
-    public void onEventMainThread(MessageEvent event){
+    public void onEventMainThread(MessageEvent event) {
     }
 }

@@ -11,13 +11,9 @@ import android.widget.TextView;
 import com.autism.chat.R;
 import com.autism.chat.base.BaseListAdapter;
 import com.autism.chat.base.ViewHolder;
-import com.autism.chat.bean.User;
-import com.autism.chat.utils.ImageLoadOptions;
 import com.autism.chat.utils.TimeUtil;
 import com.autism.chat.utils.ViewUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

@@ -215,15 +215,17 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
 
     /**
      * 自定义Button语音接口
+     *
      * @param seconds
      * @param filePath
      */
     @Override
     public void onFinish(float seconds, String filePath) {
         BmobIMAudioMessage audio = new BmobIMAudioMessage(filePath);
-        c.sendMessage(audio,listener);
+        c.sendMessage(audio, listener);
         list.setSelection(adapter.getCount());
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -244,8 +246,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.voice:
 
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(eet.getWindowToken(),0);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(eet.getWindowToken(), 0);
                 eet.setVisibility(View.GONE);
                 voicesend.setVisibility(View.VISIBLE);
                 change.setVisibility(View.VISIBLE);
@@ -265,17 +267,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     }
 
 
-
     /**
-    注：为了使SDK能够区分当前应用是否退出，开发者需进行以下几个步骤：
-
-            1、在会话和聊天的Activity类实现'ObseverListener'监听器；
-
-            2、在onResume方法中调用BmobNotificationManager.getInstance(context).addObserver(this)方法添加观察者；
-            在onPause方法中调用BmobNotificationManager.getInstance(context).removeObserver(this)方法移除观察者
-
-    3、在主Activity的onDestroy方法中调用BmobNotificationManager.getInstance(context).clearObserver()清空观察者。
-    */
+     * 注：为了使SDK能够区分当前应用是否退出，开发者需进行以下几个步骤：
+     * <p/>
+     * 1、在会话和聊天的Activity类实现'ObseverListener'监听器；
+     * <p/>
+     * 2、在onResume方法中调用BmobNotificationManager.getInstance(context).addObserver(this)方法添加观察者；
+     * 在onPause方法中调用BmobNotificationManager.getInstance(context).removeObserver(this)方法移除观察者
+     * <p/>
+     * 3、在主Activity的onDestroy方法中调用BmobNotificationManager.getInstance(context).clearObserver()清空观察者。
+     */
     @Override
     protected void onResume() {
         MediaManager.resume();
@@ -291,11 +292,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * 添加未读的通知栏消息到聊天界面
      */
-    private void addUnReadMessage(){
+    private void addUnReadMessage() {
         List<MessageEvent> cache = BmobNotificationManager.getInstance(this).getNotificationCacheList();
-        if(cache.size()>0){
-            int size =cache.size();
-            for(int i=0;i<size;i++){
+        if (cache.size() > 0) {
+            int size = cache.size();
+            for (int i = 0; i < size; i++) {
                 MessageEvent event = cache.get(i);
                 addMessage2Chat(event);
             }

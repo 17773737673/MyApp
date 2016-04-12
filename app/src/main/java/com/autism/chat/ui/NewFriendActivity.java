@@ -22,8 +22,9 @@ public class NewFriendActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_friend);
-        listview = (ListView)findViewById(R.id.list_newfriend);
+//        listview = (ListView)findViewById(R.id.list_newfriend);
     }
+
     @Subscribe
     public void onEventMainThread(MessageEvent event) {
     }

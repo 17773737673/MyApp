@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,39 +16,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.autism.chat.ChatApplication;
 import com.autism.chat.R;
 import com.autism.chat.base.BaseFragment;
 import com.autism.chat.bean.User;
 import com.autism.chat.bean.UserModel;
-import com.autism.chat.bean.listener.QueryUserListener;
-import com.autism.chat.bean.listener.UpdateCacheListener;
-import com.autism.chat.receiver.AddFriendEvent;
 import com.autism.chat.receiver.ChatEvent;
-import com.autism.chat.receiver.UpDataEvent;
-import com.autism.chat.utils.CommonUtil;
+import com.autism.chat.ui.LoginActivity;
 import com.autism.chat.utils.DirUtil;
-import com.autism.chat.utils.ImageLoadOptions;
 import com.autism.chat.utils.ViewUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.orhanobut.logger.Logger;
-
+import com.libs.zxing.CaptureActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 import java.io.File;
 import java.util.UUID;
 
 import cn.bmob.newim.BmobIM;
-import cn.bmob.newim.bean.BmobIMConversation;
 import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.newim.event.MessageEvent;
-import cn.bmob.newim.listener.ConversationListener;
 import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UploadFileListener;
 
 /**
@@ -63,6 +50,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private static final int REQUEST_CODE_GALLERY = 0x111;
     private static final int REQUEST_CODE_CAMERA = 0x222;
     private static final int REQUEST_CODE_CROP = 0x333;
+    public static final int REQUEST_CODE_PERSONAL = 0x444;
     private File sdcardTempFile;
     private ImageView iv;
     private User currentUser;
@@ -75,8 +63,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         ImageView er = (ImageView) view.findViewById(R.id.er);
         TextView tv = (TextView) view.findViewById(R.id.me_tv_account);
         RelativeLayout setting = (RelativeLayout) view.findViewById(R.id.me_item_setting);
-
-        ImageLoader.getInstance().displayImage(currentUser.getAvatar(), iv, ImageLoadOptions.getOptions());
         ViewUtil.setAvatar(currentUser.getAvatar(), R.drawable.default_icon_user, iv);
         tv.setText(currentUser.getUsername());
         iv.setOnClickListener(this);
@@ -133,12 +119,16 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                     }
                 });
                 ab.show();
-
                 break;
             case R.id.er:
-                toast("设置二维码");
+                start(CaptureActivity.class,null,false);
                 break;
             case R.id.me_item_setting:
+                UserModel.getInstance().logout();
+                //可断开连接
+                BmobIM.getInstance().disConnect();
+                getActivity().finish();
+                start(LoginActivity.class,null,true);
                 toast("设置个人信息");
                 break;
         }
@@ -220,34 +210,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         uploadAvatar(path);
     }
 
-    /**
-     * 更新头像
-     *
-     * @param url
-     */
-    private void updateUserAvatar(String url) {
-//        //对象传递，跳转界面
-
-
-//        //私聊
-//        BmobIM.getInstance().startPrivateConversation(info, new ConversationListener() {
-//            @Override
-//            public void done(BmobIMConversation c, BmobException e) {
-//                if (e == null) {
-//                    Intent intent = new Intent();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("a", c);
-//                    if (bundle != null) {
-//                        intent.putExtra(mContext.getPackageName(), bundle);
-//                        EventBus.getDefault().post(new AddFriendEvent(intent));
-//                    }
-//                } else {
-//                    Toast.makeText(ChatApplication.getInstance(), e.getMessage() + "(" + e.getErrorCode() + ")", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-    }
-
     /*
      上传图片，一个小bug费了我一个上午
      */
@@ -256,11 +218,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         file.uploadblock(ChatApplication.getInstance(), new UploadFileListener() {
             @Override
             public void onSuccess() {
+                toast("上传成功");
                 final String fileUrl = file.getFileUrl(mActivity);
                 Log.e("Chat", "file.getUrl()" + file.getUrl());
                 Log.e("Chat", "file.getFileUrl(mActivity)" + file.getFileUrl(mActivity));
                 currentUser.setAvatar(file.getFileUrl(mActivity));
-                currentUser.save(mActivity);
+                currentUser.update(mActivity);
                 BmobIMUserInfo info = new BmobIMUserInfo(currentUser.getObjectId(), currentUser.getUsername(), currentUser.getAvatar());
                 EventBus.getDefault().post(new ChatEvent(info));
             }

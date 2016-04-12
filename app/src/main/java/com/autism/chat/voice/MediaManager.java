@@ -40,14 +40,14 @@ public class MediaManager {
         try {
 
             FileInputStream fis = new FileInputStream(new File(filePath));
-            Log.e("Chat","fis.getFD()"+fis.getFD().toString());
+            Log.e("Chat", "fis.getFD()" + fis.getFD().toString());
             mPlayer.setDataSource(fis.getFD());
             mPlayer.prepareAsync();
             mPlayer.setVolume(1f, 1f);// 播放音量
             mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    Log.e("Chat","准备完毕,播放");
+                    Log.e("Chat", "准备完毕,播放");
                     mp.start();
                 }
             });

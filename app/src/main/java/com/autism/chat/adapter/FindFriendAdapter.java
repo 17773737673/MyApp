@@ -15,28 +15,18 @@ import android.widget.Toast;
 import com.autism.chat.ChatApplication;
 import com.autism.chat.R;
 import com.autism.chat.base.BaseListAdapter;
-import com.autism.chat.bean.AddFriendMessage;
 import com.autism.chat.bean.User;
 import com.autism.chat.receiver.AddFriendEvent;
-import com.autism.chat.receiver.ChatEvent;
-import com.autism.chat.ui.ChatActivity;
-import com.autism.chat.utils.ImageLoadOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.autism.chat.utils.ViewUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import cn.bmob.newim.BmobIM;
 import cn.bmob.newim.bean.BmobIMConversation;
-import cn.bmob.newim.bean.BmobIMMessage;
 import cn.bmob.newim.bean.BmobIMUserInfo;
 import cn.bmob.newim.listener.ConversationListener;
-import cn.bmob.newim.listener.MessageSendListener;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 
 
@@ -66,11 +56,8 @@ public class FindFriendAdapter<E> extends BaseListAdapter {
         final String name2 = friend.getUsername();
         name.setText(name2);
         //如果设置了头像就下载
-        if (!TextUtils.isEmpty(toux)) {
-            ImageLoader.getInstance().displayImage(toux, tox, ImageLoadOptions.getOptions());
-        } else {
-            tox.setBackgroundResource(R.drawable.default_icon_user);
-        }
+        //如果设置了头像就下载
+        ViewUtil.setAvatar(toux, R.drawable.default_icon_user, tox);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
